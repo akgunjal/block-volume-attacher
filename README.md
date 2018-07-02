@@ -1,7 +1,6 @@
 # block-volume-attacher
 block-volume-attacher provides an image which performs the attach of block volumes on any desired node. It also does the detach of the volumes which are no longer needed.
 
-
 ## Steps to attach the SoftLayer block volume on the worker node of the cluster
 
 #### Pre-requisites:
@@ -28,10 +27,10 @@ block-volume-attacher provides an image which performs the attach of block volum
 	```
 
 #### Attach the block volume on the worker node
-1. Download the docker image file `pxattach.tar`.
+1. Download the docker image file `block-volume-attacher.tar`.
 1. Use command `docker load` to load it locally on your system.
 	```
-	docker load pxattach.tar
+	docker load block-volume-attacher.tar
 	docker images
 	REPOSITORY                                                                 TAG                 IMAGE ID            CREATED             SIZE
 	registry.ng.bluemix.net/akgunjal/armada-storage-portworx-volume-attacher   latest              e9226b376770        5 days ago          88.7MB
@@ -58,7 +57,6 @@ block-volume-attacher provides an image which performs the attach of block volum
 1. Provide the block volume details IQN, username, password, target portal IP and Lun ID in the `pv.yaml` file. These values can be fetched from the Pre-requisite steps.
 1. Provide the worker node IP address in the `ibm.io/nodeip` annotation of the `pv.yaml` file. This should be the node where the volume is authorised and has to be attached.
 1. Create the persistent volume using the `pv.yaml` file. This will attach the block volume on the worker node. `kubectl describe pv` command will show the status as `attached` and the annotations will also contain the device path (Example: `/dev/dm-0`) which indicates the successful attach of the volume.
-
 
 ## Detach the block volume on the worker node
 Delete the persistent volume to detach the block volume from the worker node.

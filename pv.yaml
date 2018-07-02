@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv1
+  annotations:
+    ibm.io/iqn: "iqn.2018-04.com.ibm:ibm02su1186049-i71967875"
+    ibm.io/username: "IBM02SU1186049-I71967875"
+    ibm.io/password: "DaENcfhtrcUHv3gM"
+    ibm.io/targetip: "161.26.98.68"
+    ibm.io/lunid: "0"
+    ibm.io/nodeip: "10.171.236.248" #This should be the node where the volume is authorised and has to be attached
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /
+  storageClassName: pxclass
