@@ -33,7 +33,7 @@ block-volume-attacher provides an image which performs the attach of block volum
 	docker load block-volume-attacher.tar
 	docker images
 	REPOSITORY                                                                 TAG                 IMAGE ID            CREATED             SIZE
-	registry.ng.bluemix.net/akgunjal/armada-storage-portworx-volume-attacher   latest              e9226b376770        5 days ago          88.7MB
+	registry.ng.bluemix.net/akgunjal/armada-block-volume-attacher   latest              7b0ba7a4151c        2 hours ago         88.7MB
 	```
 1. Perform the `bx login` with your Bluemix account.
 1. After bx login, run the command `bx cr login` to login into the registry.
@@ -42,13 +42,13 @@ block-volume-attacher provides an image which performs the attach of block volum
 	```
 	docker images
 	REPOSITORY                                                                 TAG                 IMAGE ID            CREATED             SIZE
-	registry.ng.bluemix.net/akgunjal/armada-storage-portworx-volume-attacher   latest              e9226b376770        5 days ago          88.7MB
+	registry.ng.bluemix.net/akgunjal/armada-block-volume-attacher   latest              7b0ba7a4151c        2 hours ago         88.7MB
 
-	docker tag registry.ng.bluemix.net/akgunjal/armada-storage-portworx-volume-attacher registry.ng.bluemix.net/<YOUR NAMESPACE>/armada-storage-portworx-volume-attacher
+	docker tag registry.ng.bluemix.net/akgunjal/armada-block-volume-attacher registry.ng.bluemix.net/<YOUR NAMESPACE>/armada-block-volume-attacher
 	```
 1. Push the docker image to the registry onto your namespace. 
 	```
-	docker push registry.ng.bluemix.net/<YOUR NAMESPACE>/armada-storage-portworx-volume-attacher
+	docker push registry.ng.bluemix.net/<YOUR NAMESPACE>/armada-block-volume-attacher
 	```
 1. You will now see the image in `bx cr images`.
 1. Edit the `ds.yaml` file to change the image with the one stored on the registry.
