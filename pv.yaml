@@ -1,19 +1,69 @@
+
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv1
+  name: kube-wdc07-cr398f790bc285496dbeb8e9137bc6409a-w1-pv1
   annotations:
-    ibm.io/iqn: "iqn.2018-04.com.ibm:ibm02su1186049-i71967875"
-    ibm.io/username: "IBM02SU1186049-I71967875"
-    ibm.io/password: "DaENcfhtrcUHv3gM"
-    ibm.io/targetip: "161.26.98.68"
-    ibm.io/lunid: "0"
-    ibm.io/nodeip: "10.171.236.248" #This should be the node where the volume is authorised and has to be attached
+    ibm.io/iqn: "iqn.2018-06.com.ibm:sl02su1635315-i115203609"
+    ibm.io/username: "SL02SU1635315-I115203609"
+    ibm.io/password: "U4ta86R4Cjq5JuHT"
+    ibm.io/targetip: "161.26.122.34"
+    ibm.io/lunid: "9"
+    ibm.io/nodeip: "10.190.195.140"
 spec:
   capacity:
-    storage: 20Gi
+    storage: 20
   accessModes:
     - ReadWriteOnce
   hostPath:
     path: /
   storageClassName: pxclass
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kube-wdc07-cr398f790bc285496dbeb8e9137bc6409a-w2-pv1
+  annotations:
+    ibm.io/iqn: "iqn.2018-06.com.ibm:sl02su1635315-i115203619"
+    ibm.io/username: "SL02SU1635315-I115203619"
+    ibm.io/password: "DFFzTpw2lwnf8M5m"
+    ibm.io/targetip: "161.26.122.35"
+    ibm.io/lunid: "10"
+    ibm.io/nodeip: "10.190.195.145"
+spec:
+  capacity:
+    storage: 20
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /
+  storageClassName: pxclass
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kube-wdc07-cr398f790bc285496dbeb8e9137bc6409a-w3-pv1
+  annotations:
+    ibm.io/iqn: "iqn.2018-06.com.ibm:sl02su1635315-i115203607"
+    ibm.io/username: "SL02SU1635315-I115203607"
+    ibm.io/password: "RXE5Lr79qExfYBCK"
+    ibm.io/targetip: "161.26.122.34"
+    ibm.io/lunid: "11"
+    ibm.io/nodeip: "10.190.195.139"
+spec:
+  capacity:
+    storage: 20
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /
+  storageClassName: pxclass
+
+
