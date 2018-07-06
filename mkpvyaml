@@ -10,7 +10,6 @@
 #          SL_API_KEY
 #          SL_USERNAME
 #          SL_API_KEY
-#          BM_API_KEY
 #        Make sure to do "bx login"
 #
 #  Input file:
@@ -195,7 +194,7 @@ metadata:
     ibm.io/nodeip: "%s"
 spec:
   capacity:
-    storage: %s
+    storage: "%s"Gi
   accessModes:
     - ReadWriteOnce
   hostPath:

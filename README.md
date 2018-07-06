@@ -33,12 +33,14 @@ offering: storage_as_a_service   #  storage_as_a_service | enterprise | performa
 #    - iops:  100          #   INTEGER between 100 and 1000 in multiples of 100
 endurance:
   - tier:  0.25              #   [0.25|2|4|10]
-size:  [ 20 ]                #   number of comma separated elements = number of disks
+size:  [ 20 ]                #   list:  number of disks per worker node to be created, of a given size
 ```
 
 For this parameter file, the `size` array indicated the number and size
 of remote block devices that will be created for each worker node in the cluster.
-Ensure that the size of the `size` array corresponds to the number of desired remote block devices.
+The 'size' array takes volume size as a comma-separated list input. A volume will then be created for each of the sizes given in the array and for every worker node in the cluster.
+Ensure that the length of the `size` array corresponds to the number of desired remote block devices per worker node.
+For example:  'size: [ 20, 50 ]'  will create 2 disks per worker node, with corresponding sizes 20G and 50G.
 
 Please ensure that the `region` corresponds to the region where your existing IKS cluster resides.
 
@@ -85,7 +87,7 @@ kubectl apply -f class.yaml
 ```
 1. Wait until all the corresponds pods are running
 ```
-$ kubectl get pods -nkube-system | grep dsattach
+$ kubectl get pods -n kube-system | grep dsattach
 dsattach-hwtpz                                                    1/1       Running   0          24s
 dsattach-w952d                                                    1/1       Running   0          24s
 dsattach-xl6bs                                                    1/1       Running   0          24s

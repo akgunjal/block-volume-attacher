@@ -13,7 +13,7 @@ metadata:
     ibm.io/nodeip: "10.190.195.140"
 spec:
   capacity:
-    storage: 20
+    storage: 20Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -36,7 +36,7 @@ metadata:
     ibm.io/nodeip: "10.190.195.145"
 spec:
   capacity:
-    storage: 20
+    storage: 20Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -59,7 +59,7 @@ metadata:
     ibm.io/nodeip: "10.190.195.139"
 spec:
   capacity:
-    storage: 20
+    storage: 20Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
