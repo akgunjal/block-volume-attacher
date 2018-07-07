@@ -219,6 +219,7 @@ pp (doc)
 instances =  get_instances(doc['cluster'])
 for i in instances:
      print (i['hostname'], i['ip'])
+
      #
      #  For each disk ...
      #
@@ -262,6 +263,7 @@ for i in instances:
     for j in i['vols']: 
         volId = wait4_vol(j['orderId'])
         print ("            Order ID = ", j['orderId'], "has created VolId = ", volId)
+
         access_info = authorize_host_vol (volId, i['ip'])
         iqn, username, password, nodeip = get_volume_access (volId)
         targetip, lunid, capacity = get_volume_details (volId) 
