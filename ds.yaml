@@ -12,8 +12,8 @@ spec:
         name: dsattach
     spec:
       containers:
-      - image: registry.ng.bluemix.net/akgunjal/armada-block-volume-attacher:latest #image name which should be avilable within cluster
-        imagePullPolicy: IfNotPresent #Always
+      - image: registry.ng.bluemix.net/jeffpx/armada-block-volume-attacher #image name which should be avilable within cluster
+        imagePullPolicy: Always
         name: container-name # name of the container inside POD
         securityContext:
           privileged: true
