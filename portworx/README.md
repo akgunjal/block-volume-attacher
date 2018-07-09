@@ -65,6 +65,7 @@ The following values must be defined, either through `helm install --set ...` or
                        where the actual URLs correspond to your `etcd` URL.
 
 >**Note:** For baremetal instances, please specify `dataInterface=bond0` and `managementInterface=bond0`
+
 >**Note:** For disks, the default is to use all unmounted/unformatted disks and partitions.  Disk resources can be added explicitly via `drives=/dev/sda;/dev/sdb;...` 
 
 helm install --debug --name portworx-ds 
