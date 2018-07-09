@@ -22,7 +22,6 @@ All bare-metal types should work without problem.
 
 
 ## Provision a `Compose etcd` instance
--- 
 Create and deploy an instance of [Compose for etcd](https://console.bluemix.net/catalog/services/compose-for-etcd)
 
 ## etcd
@@ -65,7 +64,6 @@ The following values must be defined, either through `helm install --set ...` or
 * etcdEndPoint     :   of the form `https://portal-ssl294-1.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832`
                        where the actual URLs correspond to your `etcd` URL.
 
-```
 >**Note:** For baremetal instances, please specify `dataInterface=bond0` and `managementInterface=bond0`
 >**Note:** For disks, the default is to use all unmounted/unformatted disks and partitions.  Disk resources can be added explicitly via `drives=/dev/sda;/dev/sdb;...` 
 
