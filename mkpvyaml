@@ -78,14 +78,6 @@ def check_cfg():
           raise Exception("Must specify 'performance' OR 'endurance'")
     
 
-#
-# Given a 'hostname', search for the instance_id and the instance_ip_address
-#
-def get_instance_id_ip (hostname):
-        for h in VSmgr.list_instances():
-            if h['hostname'] == hostname:
-                 return h['id'], h['primaryBackendIpAddress']
-
 # 
 # Get the 'id's and 'ips' of the IKS workers.
 # The worker 'id's correspond to the VirtualServer "instance" hostnames
@@ -112,7 +104,8 @@ def get_instances(cluster):
     for row in contents:
         inst = {}
         inst['hostname'] = row['id']
-        inst['id'], inst['ip'] = get_instance_id_ip (inst['hostname'])
+        inst['id'] = row['id']
+        inst['ip'] = row['privateIP']
         instances.append (inst)
         datacenter = row['location']
     return instances
@@ -136,7 +129,7 @@ def wait4_vol(orderId):
                   if 'billingItem' in i: 
                         if i['billingItem']['orderItem']['order']['id'] == orderId:
                               return (i['id'])
-             print ("No volume yet ... for orderID : ", orderId)
+             print ("            No volume yet ... for orderID : ", orderId)
              time.sleep(8)
 
 #
@@ -148,10 +141,11 @@ def authorize_host_vol(volId, hostIP):
         ip_ids = [ ip_id ]
         while True:
             try:
+                 print ("            Granting access to volume: %s for HostIP: %s" % (volId, hostIP))
                  access = BSmgr.authorize_host_to_volume(volume_id=volId, ip_address_ids=ip_ids)
                  return access
             except:
-                 print ("Vol %s not yet ready ..." % volId)
+                 print ("            Vol %s is not yet ready ..." % volId)
                  time.sleep (10)
 
 #
@@ -224,7 +218,8 @@ OutF = open (OutFile, "w")
 pp (doc)
 instances =  get_instances(doc['cluster'])
 for i in instances:
-     print (i['hostname'], i['id'], i['ip'])
+     print (i['hostname'], i['ip'])
+
      #
      #  For each disk ...
      #
@@ -233,19 +228,20 @@ for i in instances:
         vol = {}
         vol.update ({ 'size' : j })
         if doc['type'] == 'performance':
-           iops=doc['performance'][0]['iops']
-           service_offering="performance"
-           tier=""
+           iops = doc['performance'][0]['iops']
+           service_offering = "performance"
+           tier = ""
         else:
-           tier=doc['endurance'][0]['tier'] 
-           service_offering="enterprise"
-           iops=""
+           tier = doc['endurance'][0]['tier'] 
+           service_offering = "enterprise"
+           iops = ""
            print("Creating Vol of size", j , "with type: ", doc['type'] )
         try:
             iops_param =  iops if doc['type'] == 'performance' else None
             # 
             # order the volume
             #
+            print ("            Ordering block storage of size: %s for host: %s" % (j, i['hostname']))
             result = BSmgr.order_block_volume(storage_type=doc['type'], 
                        location=datacenter, 
                        size=j, 
@@ -253,7 +249,7 @@ for i in instances:
                        iops=iops_param,
                        os_type='LINUX', 
                        service_offering=doc['offering']) 
-            print ("ORDER ID = ", result['orderId'])
+            print ("            ORDER ID = ", result['orderId'])
             vol.update ( {'orderId': result['orderId']} )
             i['vols'].append(vol)            
         except:
@@ -266,7 +262,8 @@ for i in instances:
 for i in instances:
     for j in i['vols']: 
         volId = wait4_vol(j['orderId'])
-        print ("Order ID = ", j['orderId'], "   VolId = ", volId)
+        print ("            Order ID = ", j['orderId'], "has created VolId = ", volId)
+
         access_info = authorize_host_vol (volId, i['ip'])
         iqn, username, password, nodeip = get_volume_access (volId)
         targetip, lunid, capacity = get_volume_details (volId) 
