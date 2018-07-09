@@ -11,8 +11,17 @@ the worker nodes.   Either make sure your "bring-your-own hardware" nodes have
 available raw block devices.   Or follow the steps [here](https://github.com/akgunjal/block-volume-attacher)
 to allocate remote block devices
 
+## Kubernetes versions
+Use Kubernetes version 1.9.8 for the time being.
+Version 1.10.3 is currently under test and has not been qualified.
+
+## Machine types
+For Virtual instances, please use `b2c.16x64` or better.
+Please do not use `b2c.4x16` nor `u2c.2x4`, which do not have sufficient resources.
+All bare-metal types should work without problem.
+
+
 ## Provision a `Compose etcd` instance
--- 
 Create and deploy an instance of [Compose for etcd](https://console.bluemix.net/catalog/services/compose-for-etcd)
 
 ## etcd
@@ -55,8 +64,48 @@ The following values must be defined, either through `helm install --set ...` or
 * etcdEndPoint     :   of the form `https://portal-ssl294-1.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832`
                        where the actual URLs correspond to your `etcd` URL.
 
-```
-helm install --debug --name portworx-ds --no-hooks 
+>**Note:** For baremetal instances, please specify `dataInterface=bond0` and `managementInterface=bond0`
 
+>**Note:** For disks, the default is to use all unmounted/unformatted disks and partitions.  Disk resources can be added explicitly via `drives=/dev/sda;/dev/sdb;...` 
+
+helm install --debug --name portworx-ds 
 
 ## Verify Portworx has been deployed
+
+Verify Portworx pods have started and are `Running`:   
+```
+$ kubectl get pods -n kube-system -l name=portworx
+NAME             READY     STATUS    RESTARTS   AGE
+portworx-c5tk6   1/1       Running   0          2d
+portworx-g7dx4   1/1       Running   0          2d
+portworx-j5lh2   1/1       Running   0          2d
+```
+
+Verify the Portworx cluster is operational.  Ex:
+```
+$ kubectl exec -it portworx-c5tk6 -n kube-system -- /opt/pwx/bin/pxctl status
+Status: PX is operational
+License: Trial (expires in 29 days)
+Node ID: 10.190.195.146
+    IP: 10.190.195.146
+     Local Storage Pool: 1 pool
+    POOL    IO_PRIORITY    RAID_LEVEL    USABLE    USED    STATUS    ZONE    REGION
+    0    LOW        raid0        100 GiB    8.0 GiB    Online    default    default
+    Local Storage Devices: 1 device
+    Device    Path                        Media Type        Size        Last-Scan
+    0:1    /dev/mapper/3600a098038303931313f4a6d53556930    STORAGE_MEDIUM_MAGNETIC    100 GiB        09 Jul 18 15:50 UTC
+    total                            -            100 GiB
+Cluster Summary
+    Cluster ID: px-cluster-metal-9d371e76-e54e-4f0b-b929-234ed35335ea
+    Cluster UUID: 52e76e3f-f39e-44b8-83eb-2cdf1496171f
+    Scheduler: kubernetes
+    Nodes: 3 node(s) with storage (3 online)
+    IP        ID        StorageNode    Used    Capacity    Status    StorageStatus    Version        Kernel            OS
+    10.190.195.165    10.190.195.165    Yes        8.0 GiB    100 GiB        Online    Up        1.4.0.0-0753ff9    4.4.0-127-generic    Ubuntu 16.04.4 LTS
+    10.190.195.146    10.190.195.146    Yes        8.0 GiB    100 GiB        Online    Up (This node)    1.4.0.0-0753ff9    4.4.0-127-generic    Ubuntu 16.04.4 LTS
+    10.190.195.131    10.190.195.131    Yes        8.0 GiB    100 GiB        Online    Up        1.4.0.0-0753ff9    4.4.0-127-generic    Ubuntu 16.04.4 LTS
+Global Storage Pool
+    Total Used        :  24 GiB
+    Total Capacity    :  300 GiB
+```
+
