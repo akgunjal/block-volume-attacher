@@ -121,3 +121,27 @@ Global Storage Pool
     Total Capacity    :  300 GiB
 ```
 
+## Deleting a Portworx cluster
+
+Since deleting a Portworx cluster implies the deletion of data, the cluster-delete operation is multi-step, to ensure operator intent.
+
+### Ensure the desired context
+
+Make sure your **KUBECONFIG** environment variable points to the Kubernetes cluster you intend to target.
+
+### Delete Helm chart
+
+Run 'helm list' to find the name of the Helm chart correpsonding to Portworx.
+Then perform a 'helm delete' of the corresponding chart.
+At this point, the Portworx `Daemonset` has been removed from Kubernetes.   But the nodes cannot (yet) be reinstalled with another Portworx cluster.
+No user data has been destroyed at this point.
+
+### Wipe Portworx cluster
+
+In order to cleanly re-install Portworx after a previous installation, the cluster will have to be **"wiped"**
+Issue the following command:
+
+```
+     curl https://install.portworx.com/px-wipe | bash
+```
+
