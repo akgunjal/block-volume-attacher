@@ -27,14 +27,7 @@ Please do not use `b2c.4x16` nor `u2c.2x4`, which do not have sufficient resourc
 All bare-metal types should work without problem.
 
 
-## `etcd`
-
-Use one OR the other of the two approaches below for providing Portworx with an 'etcd' instance
-
-* Use `Compose etcd`
-* Use Portworx internal `etcd`
-
-### Provision a `Compose etcd` instance
+## Provision a `Compose etcd` instance
 
 Create and deploy an instance of [Compose for etcd](https://console.bluemix.net/catalog/services/compose-for-etcd)
 
@@ -57,10 +50,6 @@ $ ETCDCTL_API=3 etcdctl --endpoints=https://portal-ssl294-1.bmix-wdc-yp-a7a89461
 ```
 
 Please make note of the `etcd-endpoints` as well as the `--user=root:<PASSWORD>` string 
-
-### Use the Portworx internal `etcd` 
-
-With Portworx 1.4, an [internal kvdb option is offered](https://docs.portworx.com/scheduler/kubernetes/install.html#internal-kvdb-beta)
 
 ## Deploy Portworx via Helm Chart
 
@@ -119,5 +108,29 @@ Cluster Summary
 Global Storage Pool
     Total Used        :  24 GiB
     Total Capacity    :  300 GiB
+```
+
+## Deleting a Portworx cluster
+
+Since deleting a Portworx cluster implies the deletion of data, the cluster-delete operation is multi-step, to ensure operator intent.
+
+### Ensure the desired context
+
+Make sure your **KUBECONFIG** environment variable points to the Kubernetes cluster you intend to target.
+
+### Delete Helm chart
+
+Run 'helm list' to find the name of the Helm chart correpsonding to Portworx.
+Then perform a 'helm delete' of the corresponding chart.
+At this point, the Portworx `Daemonset` has been removed from Kubernetes.   But the nodes cannot (yet) be reinstalled with another Portworx cluster.
+No user data has been destroyed at this point.
+
+### Wipe Portworx cluster
+
+In order to cleanly re-install Portworx after a previous installation, the cluster will have to be **"wiped"**
+Issue the following command:
+
+```
+     curl https://install.portworx.com/px-wipe | bash
 ```
 
