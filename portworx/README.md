@@ -27,14 +27,7 @@ Please do not use `b2c.4x16` nor `u2c.2x4`, which do not have sufficient resourc
 All bare-metal types should work without problem.
 
 
-## `etcd`
-
-Use one OR the other of the two approaches below for providing Portworx with an 'etcd' instance
-
-* Use `Compose etcd`
-* Use Portworx internal `etcd`
-
-### Provision a `Compose etcd` instance
+## Provision a `Compose etcd` instance
 
 Create and deploy an instance of [Compose for etcd](https://console.bluemix.net/catalog/services/compose-for-etcd)
 
@@ -57,10 +50,6 @@ $ ETCDCTL_API=3 etcdctl --endpoints=https://portal-ssl294-1.bmix-wdc-yp-a7a89461
 ```
 
 Please make note of the `etcd-endpoints` as well as the `--user=root:<PASSWORD>` string 
-
-### Use the Portworx internal `etcd` 
-
-With Portworx 1.4, an [internal kvdb option is offered](https://docs.portworx.com/scheduler/kubernetes/install.html#internal-kvdb-beta)
 
 ## Deploy Portworx via Helm Chart
 
