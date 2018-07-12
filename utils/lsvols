@@ -36,12 +36,11 @@ def get_regions():
       return regions
 
 def get_volume_access (volid):
+      acls = []
       lba = Bmgr.get_block_volume_access_list(volid)
-      if len(lba['allowedIpAddresses']) >= 1:
-          return (lba['allowedIpAddresses'][0]['allowedHost']['name'],
-             lba['allowedIpAddresses'][0]['ipAddress'])
-      else:
-          return "", ""
+      for a in lba['allowedIpAddresses']:
+          acls.append (a['ipAddress'])
+      return acls
 
 def get_clusters():
      regions = get_regions()
@@ -90,17 +89,20 @@ for i in get_clusters():
 hosts = {}
 for c in clusters:
     for w in clusters[c]['workers']:
-        hosts [w['privateIP']] = { 'region': clusters[c]['region'], 'cluster' : c, 'worker' : w['id'] }
+        hosts [w['privateIP']] = { 'region': clusters[c]['region'], 'cluster' : c, 'worker' : w['id'] , 'location': w['location'] }
 
 
 result = Bmgr.list_block_volumes(mask='billingItem.orderItem.order')
-print ("Order             VolID             Size            HostIPaddr           Region          Cluster             Worker")
+print ("Order             VolID             Size            HostIPaddr           Region          Cluster                Worker               Location")
 for i in result:
     if 'billingItem' in i:
-         name, ip = get_volume_access(i['id'])
-         if ip in hosts:
-               print ("%s         %s          %s            %s          %s         %s            %s" % 
-                (i['billingItem']['orderItem']['order']['id'], i['id'], i['capacityGb'], ip, hosts[ip]['region'], hosts[ip]['cluster'], hosts[ip]['worker']))
-         else:
-               print ("%s         %s          %s            %s          %s            %s" % 
-                (i['billingItem']['orderItem']['order']['id'], i['id'], i['capacityGb'], ip, "", ""))
+         ips = get_volume_access(i['id'])
+         for ip in ips:
+              if ip in hosts:
+                    print ("%s         %s          %s            %s          %s         %s            %s            %s" % 
+                     (i['billingItem']['orderItem']['order']['id'], i['id'], 
+                      i['capacityGb'], ip, hosts[ip]['region'], hosts[ip]['cluster'], 
+                      hosts[ip]['worker'], hosts[ip]['location']))
+              else:
+                    print ("%s         %s          %s            %s          %s            %s" % 
+                     (i['billingItem']['orderItem']['order']['id'], i['id'], i['capacityGb'], ip, "", ""))
