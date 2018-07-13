@@ -127,14 +127,7 @@ Since deleting a Portworx cluster implies the deletion of data, the cluster-dele
 
 ### Ensure the desired context
 
-Make sure your **KUBECONFIG** environment variable points to the Kubernetes cluster you intend to target.
-
-### Delete Helm chart
-
-Run 'helm list' to find the name of the Helm chart correpsonding to Portworx.
-Then perform a 'helm delete' of the corresponding chart.
-At this point, the Portworx `Daemonset` has been removed from Kubernetes.   But the nodes cannot (yet) be reinstalled with another Portworx cluster.
-No user data has been destroyed at this point.
+Make certain your **KUBECONFIG** environment variable points to the Kubernetes cluster you intend to target.
 
 ### Wipe Portworx cluster
 
