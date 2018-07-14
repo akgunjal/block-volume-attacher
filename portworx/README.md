@@ -121,3 +121,20 @@ Global Storage Pool
     Total Capacity    :  300 GiB
 ```
 
+## Deleting a Portworx cluster
+
+Since deleting a Portworx cluster implies the deletion of data, the cluster-delete operation is multi-step, to ensure operator intent.
+
+### Ensure the desired context
+
+Make certain your **KUBECONFIG** environment variable points to the Kubernetes cluster you intend to target.
+
+### Wipe Portworx cluster
+
+In order to cleanly re-install Portworx after a previous installation, the cluster will have to be **"wiped"**
+Issue the following command:
+
+```
+     curl https://install.portworx.com/px-wipe | bash
+```
+

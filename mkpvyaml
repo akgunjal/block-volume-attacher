@@ -83,7 +83,6 @@ def check_cfg():
 # The worker 'id's correspond to the VirtualServer "instance" hostnames
 #
 def get_instances(cluster):
-    global datacenter
     instances = []
     home = expanduser("~")
     bmxconfig = home + "/.bluemix/config.json"
@@ -106,8 +105,8 @@ def get_instances(cluster):
         inst['hostname'] = row['id']
         inst['id'] = row['id']
         inst['ip'] = row['privateIP']
+        inst['location'] = row['location']
         instances.append (inst)
-        datacenter = row['location']
     return instances
 
 #
@@ -243,7 +242,7 @@ for i in instances:
             #
             print ("            Ordering block storage of size: %s for host: %s" % (j, i['hostname']))
             result = BSmgr.order_block_volume(storage_type=doc['type'], 
-                       location=datacenter, 
+                       location=i['location'], 
                        size=j, 
                        tier_level=tier, 
                        iops=iops_param,
