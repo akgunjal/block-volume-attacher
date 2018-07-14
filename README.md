@@ -114,3 +114,8 @@ block-volume-attacher provides an image which performs the attach of block volum
 
 ## Detach the block volume on the worker node
 Delete the persistent volume to detach the block volume from the worker node.
+
+## Troubleshooting
+1. If the `kubectl describe pv` output does not show the status as `attached` or the device path is not seen after performing remote volume attach then retrieve the logs of the daemon set pod for the worker where attach did not happen.
+	`kubectl -n kube-system logs dsattach-hwtpz`
+	
