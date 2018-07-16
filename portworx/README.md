@@ -135,3 +135,6 @@ Issue the following command:
 ### Helm Delete the Portworx cluster
 
 After the above `wipe` command, then perform `helm delete chart-name` for the corresponding `helm` chart
+
+If a `wipe/delete` is being done as the result of a failed installation, 
+then a best practice is to use a different `clusterName` when creating a new cluster.
