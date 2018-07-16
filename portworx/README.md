@@ -27,14 +27,7 @@ Please do not use `b2c.4x16` nor `u2c.2x4`, which do not have sufficient resourc
 All bare-metal types should work without problem.
 
 
-## `etcd`
-
-Use one OR the other of the two approaches below for providing Portworx with an 'etcd' instance
-
-* Use `Compose etcd`
-* Use Portworx internal `etcd`
-
-### Provision a `Compose etcd` instance
+## Provision a `Compose etcd` instance
 
 Create and deploy an instance of [Compose for etcd](https://console.bluemix.net/catalog/services/compose-for-etcd)
 
@@ -56,11 +49,7 @@ $ ETCDCTL_API=3 etcdctl --endpoints=https://portal-ssl294-1.bmix-wdc-yp-a7a89461
 +------------------+---------+------------------------------------------+-------------------------+-------------------------+
 ```
 
-Please make note of the `etcd-endpoints` as well as the `--user=root:<PASSWORD>` string 
-
-### Use the Portworx internal `etcd` 
-
-With Portworx 1.4, an [internal kvdb option is offered](https://docs.portworx.com/scheduler/kubernetes/install.html#internal-kvdb-beta)
+Please make note of both of the `--etcd-endpoints` as well as the `--user=root:<PASSWORD>` string 
 
 ## Deploy Portworx via Helm Chart
 
@@ -71,8 +60,13 @@ Follow these instructions to [Deploy Portworx via Helm](https://github.com/portw
 The following values must be defined, either through `helm install --set ...` or through `values.yaml`:
 * clusterName      :   User defined
 * etcd.credentials :   `root:<PASSWORD>` , where <PASSWORD> is taken from the above etcd URL
-* etcdEndPoint     :   of the form `https://portal-ssl294-1.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832`
-                       where the actual URLs correspond to your `etcd` URL.
+* etcdEndPoint     :   of the form:
+```
+     etcdEndPoint=https://portal-ssl294-1.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832, \
+                  https://portal-ssl275-2.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832
+                  
+```
+                       where the actual URLs correspond to your `etcd` URLs.
 
 >**Note:** For baremetal instances, please specify `dataInterface=bond0` and `managementInterface=bond0`
 
