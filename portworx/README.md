@@ -66,7 +66,7 @@ The following values must be defined, either through `helm install --set ...` or
                   https://portal-ssl275-2.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832
                   
 ```
-                       where the actual URLs correspond to your `etcd` URLs.
+where the actual URLs correspond to your `etcd` URLs.
 
 >**Note:** For baremetal instances, please specify `dataInterface=bond0` and `managementInterface=bond0`
 
