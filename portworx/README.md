@@ -132,3 +132,6 @@ Issue the following command:
      curl https://install.portworx.com/px-wipe | bash
 ```
 
+### Helm Delete the Portworx cluster
+
+After the above `wipe` command, then perform `helm delete chart-name` for the corresponding `helm` chart
