@@ -48,8 +48,6 @@ except ImportError:
     from yaml import Loader, Dumper
 
 Paraml = "./yamlgen.yaml"     # Name of input parameter file
-OutFile = "./pv.yaml"         # Name of output file to create PVs
-global OutF                   # Output File Handle
 
 #
 # Load the input parameter file
@@ -169,7 +167,7 @@ def get_volume_details (volid):
 #
 # Generate the yaml file, needed to attach a given volume to a given worker
 #
-def mkpvyaml(pv):
+def mkpvyaml(pv, outfile):
 
       for i in range(len(pv['vols'])):
           print ("""
@@ -195,19 +193,17 @@ spec:
   storageClassName: pxclass
 
 """ % (pv['hostname'], i+1, pv['vols'][i]['iqn'], pv['vols'][i]['username'], pv['vols'][i]['password'],
-       pv['vols'][i]['targetip'], pv['vols'][i]['lunid'], pv['vols'][i]['nodeip'], pv['vols'][i]['capacity']), file=OutF)
+       pv['vols'][i]['targetip'], pv['vols'][i]['lunid'], pv['vols'][i]['nodeip'], pv['vols'][i]['capacity']), file=outfile)
 
 ###  --------------------------------------------------------------------------------
 
 load_cfg()
 check_cfg()
 client = SoftLayer.Client()
-global VSmgr, BSmgr, Nmgr
-VSmgr = SoftLayer.VSManager(client)
+global BSmgr, Nmgr
 BSmgr = SoftLayer.BlockStorageManager(client)
 Nmgr  = SoftLayer.managers.network.NetworkManager(client)
 
-OutF = open (OutFile, "w")
 
 #
 # Need API to list instances, given an IKS clusterID
@@ -270,9 +266,12 @@ for i in instances:
                    'nodeip': nodeip, 'targetip': targetip, 'lunid': lunid,
                    'capacity': capacity})
 
+OutFile = "pv-" + doc['cluster'] + ".yaml"
+OutF = open (OutFile, "w")
+
 # pp (instances)
 for i in instances:
-    mkpvyaml(i)
+    mkpvyaml(i, OutF)
 
 OutF.close()
 print ("Output file created as : ", OutFile)
