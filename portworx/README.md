@@ -26,6 +26,9 @@ For Virtual instances, please use `b2c.16x64` or better.
 Please do not use `b2c.4x16` nor `u2c.2x4`, which do not have sufficient resources.
 All bare-metal types should work without problem.
 
+## Multi-zone clusters
+If you are configuring a `multi-zone` cluster, then ensure you have [enabled VLAN spanning](https://console.bluemix.net/docs/containers/cs_clusters.html#multizone)
+
 
 ## Provision a `Compose etcd` instance
 
@@ -138,3 +141,13 @@ After the above `wipe` command, then perform `helm delete chart-name` for the co
 
 If a `wipe/delete` is being done as the result of a failed installation, 
 then a best practice is to use a different `clusterName` when creating a new cluster.
+
+### Retrying a previously failed installation
+
+One use case for the Portworx cluster being deleted is the result of a previously failed installation.
+If that's the case, then once the `wipe` and `helm delete` have been done,
+then a `helm install` can be re-issued.
+
+When retrying, please note the following for the `helm install`
+* Pick a different value for `clusterName`.  This ensures no collision in `etcd` with the previous clusterName.
+* Set `usefileSystemDrive=true`.  This forces the re-use of a raw device that may have previously been formatted for Portworx.
