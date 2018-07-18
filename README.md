@@ -118,4 +118,5 @@ Delete the persistent volume to detach the block volume from the worker node.
 ## Troubleshooting
 1. If the `kubectl describe pv` output does not show the status as `attached` or the device path is not seen after performing remote volume attach then retrieve the logs of the daemon set pod for the worker where attach did not happen.
 	`kubectl -n kube-system logs dsattach-hwtpz`
-	
+2. Retrieve the attacher service logs from inside the daemon set pod for the worker where attach has failed.
+	`kubectl -n kube-system exec dsattach-hwtpz -- cat /host/var/log/ibmc-portworx-service.log`
