@@ -65,8 +65,8 @@ The following values must be defined, either through `helm install --set ...` or
 * etcd.credentials :   `root:<PASSWORD>` , where <PASSWORD> is taken from the above etcd URL
 * etcdEndPoint     :   of the form:
 ```
-     etcdEndPoint=https://portal-ssl294-1.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832, \
-                  https://portal-ssl275-2.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832
+     etcdEndPoint=etcd:https://portal-ssl294-1.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832, \
+                  etcd:https://portal-ssl275-2.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832
                   
 ```
 where the actual URLs correspond to your `etcd` URLs.
