@@ -142,6 +142,21 @@ After the above `wipe` command, then perform `helm delete chart-name` for the co
 If a `wipe/delete` is being done as the result of a failed installation, 
 then a best practice is to use a different `clusterName` when creating a new cluster.
 
+## Troubleshooting
+
+### 'helm install' hangs
+
+This happens when helm/tiller is not provided with the correct RBAC permissions as [documented here](https://github.com/portworx/helm/tree/master/charts/portworx#pre-requisites)
+
+If trying to install Portworx on a new cluster and `helm install` hangs or timeouts, please Cntrl-C and try:
+
+```
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+```
+
+
 ### Retrying a previously failed installation
 
 One use case for the Portworx cluster being deleted is the result of a previously failed installation.
