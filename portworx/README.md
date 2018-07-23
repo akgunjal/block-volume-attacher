@@ -65,8 +65,8 @@ The following values must be defined, either through `helm install --set ...` or
 * etcd.credentials :   `root:<PASSWORD>` , where <PASSWORD> is taken from the above etcd URL
 * etcdEndPoint     :   of the form:
 ```
-     etcdEndPoint=https://portal-ssl294-1.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832, \
-                  https://portal-ssl275-2.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832
+     etcdEndPoint=etcd:https://portal-ssl294-1.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832, \
+                  etcd:https://portal-ssl275-2.bmix-wdc-yp-a7a89461-abcc-45e5-84d7-cde68723e30d.588786498.composedb.com:15832
                   
 ```
 where the actual URLs correspond to your `etcd` URLs.
@@ -141,6 +141,21 @@ After the above `wipe` command, then perform `helm delete chart-name` for the co
 
 If a `wipe/delete` is being done as the result of a failed installation, 
 then a best practice is to use a different `clusterName` when creating a new cluster.
+
+## Troubleshooting
+
+### 'helm install' hangs
+
+This happens when helm/tiller is not provided with the correct RBAC permissions as [documented here](https://github.com/portworx/helm/tree/master/charts/portworx#pre-requisites)
+
+If trying to install Portworx on a new cluster and `helm install` hangs or timeouts, please Cntrl-C and try:
+
+```
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+```
+
 
 ### Retrying a previously failed installation
 
