@@ -18,8 +18,7 @@ available raw block devices.   Or follow the steps [here](https://github.com/akg
 to allocate remote block devices
 
 ## Kubernetes versions
-Use Kubernetes version 1.9.8 for the time being.
-Version 1.10.3 is currently under test and has not been qualified.
+There are no restrictions on Kubernetes versions
 
 ## Machine types
 For Virtual instances, please use `b2c.16x64` or better.
