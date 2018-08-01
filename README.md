@@ -3,7 +3,7 @@ block-volume-attacher provides an image which performs the attach of block volum
 
 ## Steps to attach the SoftLayer block volume on the worker node of the cluster
 
-#### Pre-requisites:
+### Pre-requisites:
 1. Ensure the following `environment` variables are set:
 	* SL_API_KEY
 	* SL_USERNAME
@@ -18,8 +18,8 @@ block-volume-attacher provides an image which performs the attach of block volum
 	```
 	bx sl init
 	```
-##### Create remote block volumes and allow host access using either automated script or manual way
-###### Automated script way to create and authorise block volume
+#### Create remote block volumes and allow host access using either automated script or manual way
+##### Automated script way to create and authorise block volume
 1. Create a parameter file of the following form, called `yamlgen.yaml` in the current working directory
 	```
 	#
@@ -43,7 +43,7 @@ block-volume-attacher provides an image which performs the attach of block volum
 	./mkpvyaml
 	```
 
-###### Manual steps to create and authorise block volume
+##### Manual steps to create and authorise block volume
 1. Order a new block volume using the command `bx sl block volume-order -h`
 	```
 	bx sl block volume-order -t endurance -s 20 -e 2 -o LINUX -d dal09
@@ -63,7 +63,7 @@ block-volume-attacher provides an image which performs the attach of block volum
 1. Provide the block volume details IQN, username, password, target portal IP and Lun ID in the `pv.yaml` file.
 1. Provide the worker node IP address in the `ibm.io/nodeip` annotation of the `pv.yaml` file. This should be the node where the volume is authorised and has to be attached.
 
-#### Attach the block volume on the worker node
+### Attach the block volume on the worker node
 1. Download the docker image file `block-volume-attacher.tar`.
 1. Use command `docker load` to load it locally on your system.
 	```
@@ -88,22 +88,7 @@ block-volume-attacher provides an image which performs the attach of block volum
 	docker push registry.ng.bluemix.net/<YOUR NAMESPACE>/armada-block-volume-attacher
 	```
 1. You will now see the image in `bx cr images`.
-1. Edit the `ds.yaml` file to change the image with the one stored on the registry.
-1. Deploy the daemon set and check the pods in kube-system namespace on your cluster to see it should be running.
-	```
-	kubectl apply -f ds.yaml
-	```
-1. Create the storage class using `class.yaml` file.
-	```
-	kubectl apply -f class.yaml
-	```
-1. Wait until all the corresponds pods are running
-	```
-	$ kubectl get pods -n kube-system | grep dsattach
-	dsattach-hwtpz                                                    1/1       Running   0          24s
-	dsattach-w952d                                                    1/1       Running   0          24s
-	dsattach-xl6bs                                                    1/1       Running   0          24s
-	```
+1. Deploy IBM Cloud Block Storage Attacher using the helm chart.
 1. Create the persistent volume using the `pv.yaml` file, which was generated either using the automated script `mkpvyaml` or through manual steps above. This will attach the block volume on the worker node. `kubectl describe pv` command will show the status as `attached` and the annotations will also contain the device path (Example: `/dev/dm-0`) which indicates the successful attach of the volume.
 1.  Verify that a `/dev/dm-X` device has been created for all the PV's before proceeding.
 	```
@@ -117,6 +102,6 @@ Delete the persistent volume to detach the block volume from the worker node.
 
 ## Troubleshooting
 1. If the `kubectl describe pv` output does not show the status as `attached` or the device path is not seen after performing remote volume attach then retrieve the logs of the daemon set pod for the worker where attach did not happen.
-	`kubectl -n kube-system logs dsattach-hwtpz`
+	`kubectl -n kube-system logs ibmcloud-block-storage-attacher-hwtpz`
 2. Retrieve the attacher service logs from inside the daemon set pod for the worker where attach has failed.
-	`kubectl -n kube-system exec dsattach-hwtpz -- cat /host/var/log/ibmc-portworx-service.log`
+	`kubectl -n kube-system exec ibmcloud-block-storage-attacher-hwtpz -- cat /host/var/log/ibmc-portworx-service.log`
