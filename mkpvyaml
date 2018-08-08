@@ -183,6 +183,7 @@ metadata:
     ibm.io/targetip: "%s"
     ibm.io/lunid: "%s"
     ibm.io/nodeip: "%s"
+    ibm.io/volID: "%s"
 spec:
   capacity:
     storage: %sGi
@@ -193,7 +194,7 @@ spec:
   storageClassName: pxclass
 
 """ % (pv['hostname'], i+1, pv['vols'][i]['iqn'], pv['vols'][i]['username'], pv['vols'][i]['password'],
-       pv['vols'][i]['targetip'], pv['vols'][i]['lunid'], pv['vols'][i]['nodeip'], pv['vols'][i]['capacity']), file=outfile)
+       pv['vols'][i]['targetip'], pv['vols'][i]['lunid'], pv['vols'][i]['nodeip'], pv['vols'][i]['volId'], pv['vols'][i]['capacity']), file=outfile)
 
 ###  --------------------------------------------------------------------------------
 
