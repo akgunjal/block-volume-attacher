@@ -1,5 +1,5 @@
 replicaCount: 1
 image:
-  repository: registry.ng.bluemix.net/armada-master/armada-block-volume-attacher
+  repository: registry.ng.bluemix.net/<YOUR NAMESPACE>/armada-block-volume-attacher
   build: latest
   pullPolicy: Always
