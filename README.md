@@ -89,7 +89,7 @@ block-volume-attacher provides an image which performs the attach of block volum
 	```
 1. You will now see the image in `bx cr images`.
 1. [Deploy IBM Cloud Block Storage Attacher](https://github.com/akgunjal/block-volume-attacher/blob/master/helm/ibmcloud-block-storage-attacher/README.md) using the helm chart.
-1. Create the persistent volume using the `pv.yaml` file, which was generated either using the automated script `mkpvyaml` or through manual steps above. This will attach the block volume on the worker node. `kubectl describe pv` command will show the status as `attached` and the annotations will also contain the device path (Example: `/dev/dm-0`) which indicates the successful attach of the volume.
+1. Create the persistent volume using the `pv-<clustername>.yaml` file, which was generated either using the automated script `mkpvyaml` or through manual steps above. This will attach the block volume on the worker node. `kubectl describe pv` command will show the status as `attached` and the annotations will also contain the device path (Example: `/dev/dm-0`) which indicates the successful attach of the volume.
 1.  Verify that a `/dev/dm-X` device has been created for all the PV's before proceeding.
 	```
 	$ kubectl describe pv kube-wdc07-cr43d37fc1fc5a4801acb7404054baa3aa-w2-pv1  | grep dm

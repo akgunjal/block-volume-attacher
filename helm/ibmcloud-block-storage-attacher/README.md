@@ -51,10 +51,11 @@ When you set up the helm server in your cluster, you can use the helm chart prov
 Now that the helm server is up and running in your cluster, install the IBM Cloud Block Storage Attacher to attach the block storage on the nodes.
 
 1. Clone the GitHub repository where the helm chart is stored.
-   <pre>git clone git@github.com:akgunjal/block-volume-attacher.git</pre>
+   <pre>git clone https://github.com/akgunjal/block-volume-attacher.git</pre>
 2. Navigate to the installation directory.
    <pre>cd block-volume-attacher/helm</pre>
-3. Install the IBM Cloud Block Storage Attacher. Replace `<helm_chart_name>` with a name for your helm chart. When you install the attacher, pre-defined storage classes are added to your cluster.
+3. Change the `image:repository` field in `values.yaml` to reflect the image in your namespace
+4. Install the IBM Cloud Block Storage Attacher. Replace `<helm_chart_name>` with a name for your helm chart. When you install the attacher, pre-defined storage classes are added to your cluster.
    <pre>helm install ./ibmcloud-block-storage-attacher --name &lt;helm_chart_name&gt;</pre>
    
    Example output: 
