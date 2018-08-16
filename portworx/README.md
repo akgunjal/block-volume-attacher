@@ -18,7 +18,8 @@ available raw block devices.   Or follow the steps [here](https://github.com/akg
 to allocate remote block devices
 
 ## Kubernetes versions
-There are no restrictions on Kubernetes versions
+Portworx is not yet supported on IKS 1.11.2.
+All other versions are supported.
 
 ## Machine types
 For Virtual instances, please use `b2c.16x64` or better.
