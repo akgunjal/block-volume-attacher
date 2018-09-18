@@ -11,6 +11,7 @@ metadata:
     ibm.io/targetip: "161.26.122.34"
     ibm.io/lunid: "9"
     ibm.io/nodeip: "10.190.195.140"
+    ibm.io/volID: "50459622"
 spec:
   capacity:
     storage: 20Gi
@@ -18,7 +19,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /
-  storageClassName: pxclass
+  storageClassName: ibmc-block-attacher
 
 
 
@@ -34,6 +35,7 @@ metadata:
     ibm.io/targetip: "161.26.122.35"
     ibm.io/lunid: "10"
     ibm.io/nodeip: "10.190.195.145"
+    ibm.io/volID: "12345678"
 spec:
   capacity:
     storage: 20Gi
@@ -41,7 +43,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /
-  storageClassName: pxclass
+  storageClassName: ibmc-block-attacher
 
 
 
@@ -57,6 +59,7 @@ metadata:
     ibm.io/targetip: "161.26.122.34"
     ibm.io/lunid: "11"
     ibm.io/nodeip: "10.190.195.139"
+    ibm.io/volID: "98765432"
 spec:
   capacity:
     storage: 20Gi
@@ -64,6 +67,6 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /
-  storageClassName: pxclass
+  storageClassName: ibmc-block-attacher
 
 
