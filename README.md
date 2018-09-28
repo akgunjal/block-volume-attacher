@@ -90,7 +90,7 @@ block-volume-attacher provides an image which performs the attach of block volum
 1. You will now see the image in `bx cr images`.
 1. [Deploy IBM Cloud Block Storage Attacher](https://github.com/akgunjal/block-volume-attacher/blob/master/helm/ibmcloud-block-storage-attacher/README.md) using the helm chart.
 1. Create the persistent volume using the `pv-<clustername>.yaml` file, which was generated either using the automated script `mkpvyaml` or through manual steps above. This will attach the block volume on the worker node. `kubectl describe pv` command will show the status as `attached` and the annotations will also contain the device path (Example: `/dev/dm-0`) which indicates the successful attach of the volume.
-1.  Verify that a `/dev/dm-X` device has been created for all the PV's before proceeding.
+1. Verify that a `/dev/dm-X` device has been created for all the PV's before proceeding.
 	```
 	$ kubectl describe pv kube-wdc07-cr43d37fc1fc5a4801acb7404054baa3aa-w2-pv1  | grep dm
 	                 ibm.io/dm=/dev/dm-0
@@ -98,7 +98,15 @@ block-volume-attacher provides an image which performs the attach of block volum
 	Make note of all the `/dev/dm-X` devices that are attached.
 
 ## Detach the block volume on the worker node
-Delete the persistent volume to detach the block volume from the worker node.
+1. Delete the persistent volume to detach the block volume from the worker node.
+2. Unauthorise the worker node for the volume ID where it was attached. This will prevent this volume from getting attached again during the rescan of iSCSI session.
+	```
+	bx sl block access-revoke 12345678 -p 10.171.236.248
+	```
+3. **Optional:** If you do not want this block volume any further, then it can be deleted from SoftLayer using the command `bx sl block volume-cancel -h`.
+	```
+	bx sl block volume-cancel -f 12345678
+	```
 
 ## Troubleshooting
 1. If the `kubectl describe pv` output does not show the status as `attached` or the device path is not seen after performing remote volume attach then retrieve the logs of the daemon set pod for the worker where attach did not happen.
