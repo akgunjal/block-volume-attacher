@@ -246,7 +246,8 @@ for i in instances:
                        size=j, 
                        tier_level=tier, 
                        iops=iops_param,
-                       os_type='LINUX', 
+                       os_type='LINUX',
+                       hourly_billing_flag=True,
                        service_offering=doc['offering']) 
             print ("            ORDER ID = ", result['orderId'])
             vol.update ( {'orderId': result['orderId']} )
