@@ -35,7 +35,7 @@
 
 import os
 import time
-import sys
+import sys, traceback
 import json
 import urllib.request
 from os.path import expanduser
@@ -99,6 +99,8 @@ def get_instances(cluster):
         contents = json.loads(response)
     except:
         print ("Unable to get cluster workers.  Are you logged in (\"bx login\")?  Does " + cluster + " actually exist?  Are your credentials set?")
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)
         sys.exit(-1)
     
     for row in contents:
